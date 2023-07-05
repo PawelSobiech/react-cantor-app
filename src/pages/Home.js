@@ -3,9 +3,9 @@ import { Box, Typography } from '@mui/material';
 
 const Home = () => {
   return (
-    <Box maxWidth="800px" marginLeft="20px" marginTop="50px">
+    <Box maxWidth="800px" marginLeft="20px" marginTop="50px" color="#e7dfdd">
       <Typography fontSize="24px" color="#a239ca" variant="h1">Witaj w naszym Kantorze!</Typography>
-      <Typography color="#e7dfdd" variant = "body1" >
+      <Typography variant = "body1" >
           Możesz u nas śledzić kursy średnie dwóch popularnych walut: Euro i USD.
           Wybierz interesującą Cię walutę z listy dostępnych opcji, a następnie przejdź do widoku szczegółów, 
           gdzie znajdziesz aktualny kurs średni wybranej waluty. 
