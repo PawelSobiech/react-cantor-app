@@ -13,7 +13,7 @@ import Footer from './components/Footer'
 // void - #0e0b16
 // fuchsia - #a239ca
 // jewel - #4717f6
-// stark - e7dfdd
+// stark - #e7dfdd
 
 
 function App() {
