@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 
 import Home from './pages/Home';
 import CurrencyPanel from './pages/CurrencyPanel';
+import GoldPanel from './pages/GoldPanel';
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/currency-panel" element={<CurrencyPanel/>}/>
+        <Route path="/gold-panel" element={<GoldPanel/>}/>
       </Routes>
       <Footer/>
     </Box>

@@ -34,6 +34,13 @@ const Navbar = () => {
               color: '#e7dfdd',
               fontWeight: 'bold'
           }}>Currency Panel</Link>
+          <Link 
+            to="/gold-panel"
+            style={{
+              textDecoration: 'none',
+              color: '#e7dfdd',
+              fontWeight: 'bold'
+          }}>Gold Panel</Link>
         </Stack>
     </Stack>
   )

@@ -16,6 +16,18 @@ app.get('/currency-rates', async (req, res) => {
   }
 });
 
+
+app.get('/last-currency-rates/:currency', async (req, res) => {
+  try {
+    const { currency } = req.params;
+    const response = await axios.get(`http://api.nbp.pl/api/exchangerates/rates/A/${currency}/last/30/`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
