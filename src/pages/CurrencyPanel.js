@@ -1,46 +1,44 @@
 import React, { useState } from 'react';
-import { Box, InputLabel, MenuItem, FormControl, Select, TextField, Button, TableCell, TableBody, TableRow, Table, TableHead, TableContainer } from '@mui/material';
+import { Box, InputLabel, MenuItem, FormControl, Select, TextField, Button, TableCell, TableBody, TableRow, Table, TableHead, TableContainer, Typography } from '@mui/material';
 import axios from 'axios';
 
 export default function CurrencyPanel() {
   const [currency, setCurrency] = useState('USD');
   const [savedData, setSavedData] = useState([]);
+  const [effectiveDate, setEffectiveDate] = useState();
 
   const handleChange = (event) => {
     setCurrency(event.target.value);
   };
 
-const fetchCurrencyRates = async (currency) => {
-  try {
-    const response = await axios.get('http://api.nbp.pl/api/exchangerates/tables/A/');
-    const filteredData = response.data.filter((data) => data.currency === currency);
-    console.log(filteredData)
-    console.log("chuj")
-    setSavedData(filteredData)
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const fetchCurrencyRates = async (currency) => {
+    try {
+      const response = await axios.get('http://localhost:3001/currency-rates');
+      const data = response.data;
+      setEffectiveDate(data[0].effectiveDate);
+      const filteredData = data.flatMap((item) => item.rates).filter((item) => item.code === currency)
+      setSavedData(filteredData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-fetchCurrencyRates(currency);
+  const fetchCurrency = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/currency-rates');
+      const data = response.data;
+      setEffectiveDate(data[0].effectiveDate);
+      const filteredData = data.flatMap((item) => item.rates);
+      setSavedData(filteredData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Box maxWidth="800px" marginLeft="20px" marginTop="50px" color="#e7dfdd">
-      {/* <TextField id="filled-basic" label="Enter " variant="filled" sx={{
-        backgroundColor:"#a239ca", 
-        color: "#e7dfdd",
-        marginRight:"20px"
-        }}/>
-      <TextField id="filled-basic" label="Filled" variant="filled" sx={{
-        backgroundColor:"#a239ca", 
-        color: "#e7dfdd",
-        marginRight:"20px"
-        }}/>
-      <TextField id="filled-basic" label="Filled" variant="filled" sx={{
-        backgroundColor:"#a239ca", 
-        color: "#e7dfdd",
-        marginRight:"20px"
-        }}/> */}
+      <Typography variant="h4">Choose currency you want to look for</Typography>
+      <Typography fontWeight={400}>Each rate refers to PLN according to current NBP data</Typography>
       <Box maxWidth="100px" sx={{marginTop:"25px"}}>
         <FormControl fullWidth>
           <InputLabel id="currency-select-label" style={{ color: "#e7dfdd" }}>Currency</InputLabel>
@@ -50,19 +48,30 @@ fetchCurrencyRates(currency);
             value={currency}
             label="Currency"
             onChange={handleChange}
-            style={{ backgroundColor: "#a239ca", color: "#e7dfdd"}}
+            style={{ backgroundColor: "#4717f6", color: "#e7dfdd"}}
           >
             <MenuItem value="USD" style={{ color: "#0e0b16" }}>USD</MenuItem>
             <MenuItem value="EUR" style={{ color: "#0e0b16" }}>EUR</MenuItem>
           </Select>
-          <Button sx={{
-            backgroundColor: "#a239ca", 
-            color: "#e7dfdd",
-            marginTop: "10px"
-          }}
-          onClick={fetchCurrencyRates}>Get data</Button>
         </FormControl>
+      
+      <Button fullWidth sx={{
+        backgroundColor: "#a239ca", 
+        color: "#e7dfdd",
+        marginTop: "10px",
+        marginRight: "10px"
+        
+      }}
+      onClick={() => fetchCurrencyRates(currency)}>Get data
+      </Button>
       </Box>
+      <Button sx={{
+        backgroundColor: "#a239ca", 
+        color: "#e7dfdd",
+        marginTop: "10px",
+        }}
+      onClick={fetchCurrency}>Get all currencies data
+      </Button>
       <TableContainer sx={{ maxWidth: '1500px' }} style={{ height: '90%', backgroundColor: '#4717f6', marginTop: '20px'}}>
         <Box sx={{ overflow: 'auto' }}>
           <Table sx={{ border: '1px solid #ccc' }}>
@@ -70,51 +79,17 @@ fetchCurrencyRates(currency);
               <TableRow>
                 <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Currency</TableCell>
                 <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Currency Rate</TableCell>
-                <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Action</TableCell>
+                <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Date</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-            {savedData.map((data) => (
-                <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{data.name}</TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>{data.rate}</TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc' }}>
-                    <Button
-                      variant="outlined"
-                      className="add-btn"
-                      sx={{
-                        bgcolor: '#FF2625',
-                        color: '#fff',
-                        textTransform: 'none',
-                        minWidth: '80px',
-                        height: '40px',
-                        fontSize: { lg: '16px', xs: '12px' },
-                        marginBottom: '10px',
-                        marginRight: '10px',
-                      }}
-                      //onClick={() => deleteExercise(data._id)}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      className="add-btn"
-                      sx={{
-                        bgcolor: '#2ECC71',
-                        color: '#fff',
-                        textTransform: 'none',
-                        minWidth: '80px',
-                        height: '40px',
-                        fontSize: { lg: '16px', xs: '12px' },
-                        marginBottom: '10px',
-                      }}
-                      //onClick={() => handleEdit(data)}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
+              {savedData.map((data) =>
+                <TableRow key={data.code} sx={{color: '#e7dfdd'}}>
+                  <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{data.currency}</TableCell>
+                  <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{data.mid}</TableCell>
+                  <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd'  }}>{effectiveDate}</TableCell>
                 </TableRow>
-                ))}
+              )}
             </TableBody>
           </Table>
         </Box>
