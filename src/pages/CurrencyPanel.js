@@ -1,4 +1,4 @@
-import React, { useState, PureComponent } from 'react';
+import React, { useState } from 'react';
 import { Grid, Stack, Box, InputLabel, MenuItem, FormControl, Select, Button, TableCell, TableBody, TableRow, Table, TableHead, TableContainer, Typography } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -10,6 +10,8 @@ export default function CurrencyPanel() {
   const [effectiveDate, setEffectiveDate] = useState();
   const [sortOrder, setSortOrder] = useState('null');
   const [plotData, setPlotData] = useState([]);
+  const [showTable, setShowTable] = useState(false);
+  const [showPlot, setShowPlot] = useState(false);
 
   const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
@@ -25,6 +27,7 @@ export default function CurrencyPanel() {
       const data = response.data;
       setEffectiveDate(data[0].effectiveDate);
       const filteredData = data.flatMap((item) => item.rates).filter((item) => item.code === currency);
+      setShowTable(true);
       setSavedData(filteredData);
     } catch (error) {
       console.error(error);
@@ -37,14 +40,14 @@ export default function CurrencyPanel() {
       const data = response.data;
       setEffectiveDate(data[0].effectiveDate);
       let filteredData = data.flatMap((item) => item.rates);
-      
+      setShowTable(true);
       setSavedData(filteredData);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const sortCurrencies = () => {
+  const sortCurrencies = () => {  
     let filteredData = [...savedData];
   
     if (sortOrder === 'asc') {
@@ -53,7 +56,9 @@ export default function CurrencyPanel() {
       filteredData.sort((a, b) => b.mid - a.mid);
     }
     else{
-      fetchCurrency()
+      if(showTable){
+        fetchCurrency()
+      }
     }
     setSavedData(filteredData);
   };
@@ -65,11 +70,21 @@ export default function CurrencyPanel() {
         date: rate.effectiveDate,
         rate: rate.mid,
       }));
-      console.log(data);
+      setShowPlot(true);
       setPlotData(data);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const clearView = () => {  
+    setCurrency('USD');
+    setSavedData();
+    setShowPlot(false);
+    setShowTable(false);
+    setSortOrder('null');
+    setPlotData();
+    setEffectiveDate();
   };
 
   return (
@@ -77,7 +92,7 @@ export default function CurrencyPanel() {
       <Grid item xs={12} md={6}>
         <Box>
           <Typography color="#a239ca" variant="h4">Choose currency you want to look for!</Typography>
-          <Typography fontWeight={400}>Each rate refers to PLN according to current NBP data</Typography>
+          <Typography fontWeight={400}>Each rate refers to PLN according to current NBP's data</Typography>
           <Stack direction="row" maxWidth="300px" sx={{marginTop:"25px"}}>
             <FormControl fullWidth>
               <InputLabel id="currency-select-label" style={{ color: "#e7dfdd" }}>Currency</InputLabel>
@@ -143,58 +158,76 @@ export default function CurrencyPanel() {
             <Button
               sx={{
                 backgroundColor: "#a239ca", 
-                color: "#e7dfdd"
+                color: "#e7dfdd",
+                marginRight: "10px" 
               }}
               onClick={generatePlot}
             >
               Generate plot
             </Button>
+            <Button
+              sx={{
+                backgroundColor: "#a239ca", 
+                color: "#e7dfdd"
+              }}
+              onClick={clearView}
+            >
+              Clear view
+            </Button>
           </Stack>
         </Box>
-        <TableContainer sx={{ maxWidth: '700px', flex: 1 }} style={{ backgroundColor: '#4717f6', marginTop: '20px', marginBottom:"100px"}}>
-          <Box sx={{ overflow: 'auto', height: '100%' }}>
-            <Table sx={{ border: '1px solid #ccc' }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Currency</TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Currency Rate</TableCell>
-                  <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Date</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {savedData.map((data) => (
-                  <TableRow key={data.code} sx={{color: '#e7dfdd'}}>
-                    <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{data.currency}</TableCell>
-                    <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{data.mid}</TableCell>
-                    <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{effectiveDate}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        </TableContainer>
+        {showTable && (
+          <>
+            <TableContainer sx={{ maxWidth: '700px', flex: 1 }} style={{ backgroundColor: '#4717f6', marginTop: '20px', marginBottom:"100px"}}>
+              <Box sx={{ overflow: 'auto', height: '100%' }}>
+                <Table sx={{ border: '1px solid #ccc' }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Currency</TableCell>
+                      <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Currency Rate</TableCell>
+                      <TableCell sx={{ border: '1px solid #ccc', fontSize: '16px', fontWeight: 'bold', color: '#e7dfdd' }}>Date</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {savedData.map((data) => (
+                      <TableRow key={data.code} sx={{color: '#e7dfdd'}}>
+                        <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{data.currency}</TableCell>
+                        <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{data.mid}</TableCell>
+                        <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{effectiveDate}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableContainer>
+          </>
+        )}
       </Grid>
       <Grid item xs={12} md={6}>
-        <Typography color="#a239ca" variant="h4">Last 30 {currency}'s rates</Typography>
-        <ResponsiveContainer width="100%" height={450}>
-        <LineChart
-          data={plotData}
-          color="#e7dfdd"
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="rate" stroke="#8884d8" activeDot={{ r: 8 }} />
-        </LineChart>
-      </ResponsiveContainer>
+        {showPlot && (
+          <>
+            <Typography color="#a239ca" variant="h4">Last 30 {currency}'s rates</Typography>
+            <ResponsiveContainer width="100%" height={450}>
+            <LineChart
+              data={plotData}
+              color="#e7dfdd"
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="rate" stroke="#8884d8" activeDot={{ r: 8 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </>
+        )}
       </Grid>
     </Grid>
   );
