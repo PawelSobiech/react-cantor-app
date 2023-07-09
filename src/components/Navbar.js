@@ -1,8 +1,10 @@
-import React from 'react'
-import { Stack } from '@mui/material'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Stack } from '@mui/material';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
+  const location = useLocation();
+
   return (
     <Stack 
       direction="row"
@@ -29,7 +31,7 @@ const Navbar = () => {
           to="/"
           style={{
             textDecoration: 'none',
-            color: '#e7dfdd',
+            color: location.pathname === '/' ? '#a239ca' : '#e7dfdd',
             fontWeight: 'bold'
           }}
         >
@@ -39,7 +41,7 @@ const Navbar = () => {
           to="/currency-panel"
           style={{
             textDecoration: 'none',
-            color: '#e7dfdd',
+            color: location.pathname.includes('/currency-panel') ? '#a239ca' : '#e7dfdd',
             fontWeight: 'bold'
           }}
         >
@@ -49,7 +51,7 @@ const Navbar = () => {
           to="/gold-panel"
           style={{
             textDecoration: 'none',
-            color: '#e7dfdd',
+            color: location.pathname.includes('/gold-panel') ? '#a239ca' : '#e7dfdd',
             fontWeight: 'bold'
           }}
         >
@@ -57,7 +59,7 @@ const Navbar = () => {
         </Link>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
