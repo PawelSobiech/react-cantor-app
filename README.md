@@ -8,27 +8,27 @@ Download and unzip project, then open folder in Visual Studio Code and open term
 
 Type npm install to download dependencies
 
-![Screenshot](./examples/command1.png)
+![Screenshot](/examples/command1.png)
 
 Start client and server services
 
-![Screenshot](./examples/command2.png)
+![Screenshot](/examples/command2.png)
 
 Running services
 
-![Screenshot](./examples/command3.png)
+![Screenshot](/examples/command3.png)
 
 ## Running project
 
 ### 1. Landing page
 
-![Screenshot](./examples/home.png)
+![Screenshot](/examples/home.png)
 
 ### 2. Currencies Panel
 
-![Screenshot](./examples/currencies.png)
+![Screenshot](/examples/currencies.png)
 
 ### 3. Gold Panel
 
-![Screenshot](./examples/gold.png)
+![Screenshot](/examples/gold.png)
 
