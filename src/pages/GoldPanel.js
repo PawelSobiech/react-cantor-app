@@ -150,7 +150,6 @@ export default function GoldPanel() {
                   <TableBody>
                     {savedData.map((dane) => (
                       <TableRow key={dane.data} sx={{color: '#e7dfdd'}}>
-                        {console.log(`datakey ${dane.data}`)}
                         <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{dane.cena}</TableCell>
                         <TableCell sx={{ border: '1px solid #ccc', color: '#e7dfdd' }}>{dane.data}</TableCell>
                       </TableRow>
