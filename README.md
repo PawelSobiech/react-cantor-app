@@ -8,27 +8,27 @@ Download and unzip project, then open folder in Visual Studio Code and open term
 
 Type npm install to download dependencies
 
-![Screenshot](/examples/command1.png)
+![Screenshot](https://github.com/PawelSobiech/react-cantor-app/blob/main/examples/command1.PNG)
 
 Start client and server services
 
-![Screenshot](/examples/command2.png)
+![Screenshot](https://github.com/PawelSobiech/react-cantor-app/blob/main/examples/command2.PNG)
 
 Running services
 
-![Screenshot](/examples/command3.png)
+![Screenshot](https://github.com/PawelSobiech/react-cantor-app/blob/main/examples/command3.PNG)
 
 ## Running project
 
 ### 1. Landing page
 
-![Screenshot](/examples/home.png)
+![Screenshot](https://github.com/PawelSobiech/react-cantor-app/blob/main/examples/home.PNG)
 
 ### 2. Currencies Panel
 
-![Screenshot](/examples/currencies.png)
+![Screenshot](https://github.com/PawelSobiech/react-cantor-app/blob/main/examples/currencies.PNG)
 
 ### 3. Gold Panel
 
-![Screenshot](/examples/gold.png)
+![Screenshot](https://github.com/PawelSobiech/react-cantor-app/blob/main/examples/gold.PNG)
 
