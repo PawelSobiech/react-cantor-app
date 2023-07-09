@@ -11,11 +11,12 @@ import GoldPanel from './pages/GoldPanel';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 
+// color palette
 // void - #0e0b16
 // fuchsia - #a239ca
 // jewel - #4717f6
 // stark - #e7dfdd
-
+// font - Verdana
 
 function App() {
   return (

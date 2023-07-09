@@ -17,7 +17,7 @@ const Footer = () => {
         padding: '20px',
       }}
     >
-      <Typography fontWeight="bold" color="#e7dfdd">
+      <Typography fontWeight="bold" color="#e7dfdd" flexShrink={0}>
         Made by TNBM
       </Typography>
     </Stack>
