@@ -30,7 +30,7 @@ const Navbar = () => {
         <Link 
           to="/"
           style={{
-            textDecoration: 'none',
+            textDecoration: location.pathname === '/' ? 'underline' : 'none',
             color: location.pathname === '/' ? '#a239ca' : '#e7dfdd',
             fontWeight: 'bold'
           }}
@@ -40,7 +40,7 @@ const Navbar = () => {
         <Link 
           to="/currency-panel"
           style={{
-            textDecoration: 'none',
+            textDecoration: location.pathname.includes('/currency-panel') ? 'underline' : 'none',
             color: location.pathname.includes('/currency-panel') ? '#a239ca' : '#e7dfdd',
             fontWeight: 'bold'
           }}
@@ -50,7 +50,7 @@ const Navbar = () => {
         <Link 
           to="/gold-panel"
           style={{
-            textDecoration: 'none',
+            textDecoration: location.pathname.includes('/gold-panel') ? 'underline' : 'none',
             color: location.pathname.includes('/gold-panel') ? '#a239ca' : '#e7dfdd',
             fontWeight: 'bold'
           }}

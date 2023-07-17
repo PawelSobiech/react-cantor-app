@@ -2,7 +2,6 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 
-
 const app = express();
 const PORT = 3001;
 app.use(cors());
@@ -15,7 +14,6 @@ app.get('/currency-rates', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 app.get('/last-currency-rates/:currency', async (req, res) => {
   try {
